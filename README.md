@@ -1,4 +1,4 @@
-# Daily Progressive To-Do Tracker
+# ToDoMAX
 
 ## 🚀 Project Overview
 
@@ -51,7 +51,7 @@ Daily Progressive To-Do Tracker is a minimalist, privacy-focused Android applica
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/daily-progressive-todo-tracker.git
+git clone https://github.com/rajdesai17/TODoMAX
 ```
 Open the project in Android Studio
 Sync Gradle files
