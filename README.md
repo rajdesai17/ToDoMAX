@@ -1,6 +1,7 @@
 # Daily Todo Tracker
 
 A minimalist daily task tracking app built with React Native and Expo. Track your daily tasks, visualize progress, and share your achievements on social media. Unlike traditional to-do apps, this application provides a unique day-centric approach to productivity tracking
+Download Link - https://expo.dev/artifacts/eas/mUXJGz7Yi79uSUfQe2JSDm.apk
 
 ## Features
 
