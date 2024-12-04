@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 # Daily Todo Tracker
 
-A minimalist daily task tracking app built with React Native and Expo. Track your daily tasks, visualize progress, and share your achievements on social media.
+A minimalist daily task tracking app built with React Native and Expo. Track your daily tasks, visualize progress, and share your achievements on social media. Unlike traditional to-do apps, this application provides a unique day-centric approach to productivity tracking
 
 ## Features
 
@@ -117,70 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with [React Native](https://reactnative.dev/)
 - Calendar component by [react-native-calendars](https://github.com/wix/react-native-calendars)
 - Icons from [Expo Vector Icons](https://icons.expo.fyi)
-=======
-# ToDoMAX
 
-## 🚀 Project Overview
-
-Daily Progressive To-Do Tracker is a minimalist, privacy-focused Android application designed to revolutionize daily task management. Unlike traditional to-do apps, this application provides a unique day-centric approach to productivity tracking.
-
-![App Banner/Logo Placeholder]
-
-## ✨ Key Features
-
-### 1. Day-Specific Task Management
-- Create tasks for each day
-- Seamless task carry-forward
-- Individual day task isolation
-
-### 2. Advanced Task Interactions
-- Create new tasks
-- Mark tasks as complete
-- Postpone tasks
-- Edit task details
-- Delete tasks
-- Progress percentage tracking
-
-### 3. Creative Social Sharing
-- Generate visually appealing task list snapshots
-- One-tap sharing to social media platforms
-- Multiple design templates
-
-## 🛠 Technology Stack
-
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Database**: Room Database
-- **Architecture**: MVVM
-- **Dependency Injection**: Hilt
-
-## 📱 Minimum Requirements
-
-- Android 8.0 (API 26) and above
-- Minimum 2GB RAM
-- Approximately 10MB storage space
-
-## 🏗 Project Setup
-
-### Prerequisites
-- Android Studio Arctic Fox (2020.3.1) or later
-- JDK 11
-- Kotlin Plugin
-
-### Installation Steps
-
-1. Clone the repository
-```bash
-git clone https://github.com/rajdesai17/TODoMAX
-```
-Open the project in Android Studio
-Sync Gradle files
-Build and run the project
-
-🧪 Running Tests
-```
-./gradlew test
-```
 🤝 Contributing
 Ways to Contribute
 
