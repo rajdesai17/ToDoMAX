@@ -1,21 +1,22 @@
 {
   "expo": {
-    "name": "daily-todo-tracker",
+    "name": "Daily Todo Tracker",
     "slug": "daily-todo-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "dailytodo",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.personal.dailytodotracker"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.personal.dailytodotracker"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,21 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "newArchEnabled": false,
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "dfdd0e39-1a4e-4a03-9499-a400c75d934c"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/dfdd0e39-1a4e-4a03-9499-a400c75d934c"
     }
   }
 }

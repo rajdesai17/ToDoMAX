@@ -1,109 +1,262 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import ShareProgress from '@/components/ShareProgress';
+import ThemedText from '@/components/ThemedText';
+import ThemedView from '@/components/ThemedView';
+import { DailyProgress, Task } from '@/types';
+import storage from '@/utils/storage';
 
-export default function TabTwoScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
+type MarkedDates = {
+  [date: string]: {
+    marked: boolean;
+    dotColor: string;
+    selected?: boolean;
+  };
+};
+
+export default function ExploreScreen() {
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [progress, setProgress] = useState<DailyProgress | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showShare, setShowShare] = useState(false);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    loadDateData(selectedDate);
+  }, [selectedDate]);
+
+  const loadData = async () => {
+    try {
+      setIsLoading(true);
+      const allTasks = await storage.getAllTasks();
+      const allProgress = await storage.getAllProgress();
+
+      const marks: MarkedDates = {};
+      allTasks.forEach(task => {
+        if (!marks[task.date]) {
+          marks[task.date] = {
+            marked: true,
+            dotColor: '#0a7ea4',
+          };
+        }
+      });
+
+      marks[selectedDate] = {
+        ...marks[selectedDate],
+        selected: true,
+      };
+
+      setMarkedDates(marks);
+      await loadDateData(selectedDate);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadDateData = async (date: string) => {
+    try {
+      const [dateTasks, dateProgress] = await Promise.all([
+        storage.getTasks(date),
+        storage.getDailyProgress(date),
+      ]);
+      setTasks(dateTasks);
+      setProgress(dateProgress);
+    } catch (error) {
+      console.error('Error loading date data:', error);
+    }
+  };
+
+  const onDayPress = (day: { dateString: string }) => {
+    setSelectedDate(day.dateString);
+    setMarkedDates(prev => ({
+      ...prev,
+      [selectedDate]: { ...prev[selectedDate], selected: false },
+      [day.dateString]: { ...prev[day.dateString], selected: true },
+    }));
+  };
+
+  const StatBox = useCallback(({ title, value }: { title: string; value: number | string }) => (
+    <View style={styles.statBox}>
+      <ThemedText type="title" style={styles.statValue}>
+        {value}
+      </ThemedText>
+      <ThemedText type="subtitle" style={styles.statTitle}>
+        {title}
+      </ThemedText>
+    </View>
+  ), []);
+
+  if (isLoading) {
+    return (
+      <ThemedView style={[styles.container, styles.centerContent]}>
+        <ActivityIndicator size="large" color="#0a7ea4" />
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+    );
+  }
+
+  return (
+    <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <ThemedText type="title">Task History</ThemedText>
+        {progress && (
+          <TouchableOpacity 
+            style={styles.shareButton}
+            onPress={() => setShowShare(true)}
+          >
+            <Feather name="share-2" size={24} color="#0a7ea4" />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <Calendar
+        style={styles.calendar}
+        theme={{
+          todayTextColor: '#0a7ea4',
+          selectedDayBackgroundColor: '#0a7ea4',
+          selectedDayTextColor: '#ffffff',
+        }}
+        markedDates={markedDates}
+        onDayPress={onDayPress}
+      />
+
+      <View style={styles.statsContainer}>
+        <StatBox 
+          title="Tasks" 
+          value={tasks.length} 
+        />
+        <StatBox 
+          title="Completed" 
+          value={progress?.completedTasks || 0} 
+        />
+        <StatBox 
+          title="Completion Rate" 
+          value={`${progress?.progressPercentage || 0}%`} 
+        />
+      </View>
+
+      <View style={styles.taskList}>
+        <ThemedText type="subtitle" style={styles.dateTitle}>
+          {new Date(selectedDate).toLocaleDateString(undefined, { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
         </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+        {tasks.length === 0 ? (
+          <ThemedText style={styles.emptyText}>No tasks for this date</ThemedText>
+        ) : (
+          tasks.map(task => (
+            <View key={task.id} style={styles.taskItem}>
+              <View style={[styles.taskStatus, task.isCompleted && styles.completed]} />
+              <ThemedText style={[styles.taskText, task.isCompleted && styles.completedText]}>
+                {task.title}
+              </ThemedText>
+            </View>
+          ))
+        )}
+      </View>
+
+      {progress && (
+        <ShareProgress
+          visible={showShare}
+          onClose={() => setShowShare(false)}
+          progress={progress}
+          tasks={tasks}
+        />
+      )}
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  titleContainer: {
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    padding: 20,
     flexDirection: 'row',
-    gap: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  shareButton: {
+    padding: 8,
+  },
+  calendar: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#e1e1e1',
+  },
+  statsContainer: {
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e1e1e1',
+  },
+  statBox: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statValue: {
+    fontSize: 24,
+    color: '#0a7ea4',
+  },
+  statTitle: {
+    fontSize: 14,
+    color: '#666',
+  },
+  taskList: {
+    flex: 1,
+    padding: 20,
+  },
+  dateTitle: {
+    marginBottom: 16,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  taskItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    gap: 12,
+  },
+  taskStatus: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#0a7ea4',
+  },
+  completed: {
+    backgroundColor: '#0a7ea4',
+  },
+  taskText: {
+    flex: 1,
+    fontSize: 16,
+  },
+  completedText: {
+    color: '#999',
+    textDecorationLine: 'line-through',
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#666',
+    marginTop: 20,
   },
 });

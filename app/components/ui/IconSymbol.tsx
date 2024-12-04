@@ -27,7 +27,7 @@ export type IconSymbolName = keyof typeof MAPPING;
  *
  * Icon `name`s are based on SFSymbols and require manual mapping to MaterialIcons.
  */
-export function IconSymbol({
+function IconSymbol({
   name,
   size = 24,
   color,
@@ -41,3 +41,5 @@ export function IconSymbol({
 }) {
   return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
 }
+
+export default IconSymbol;
