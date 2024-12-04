@@ -13,19 +13,25 @@ A minimalist daily task tracking app built with React Native and Expo. Track you
 - 📸 Add media attachments to tasks
 - 🔄 Task postponement with confirmation
 
-## Quick Start - Using Expo Go (Easiest)
+## Installation Options
 
-1. Install Expo Go on your device:
-   - [iOS App Store](https://apps.apple.com/app/apple-store/id982107779)
-   - [Android Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
+### Method 1: Direct APK Installation (Android Only)
 
-2. Open this link on your device:
-   ```
-   exp://exp.host/@your-expo-username/daily-todo-tracker
-   ```
-   Or scan the QR code from the repository (add QR code image here)
+1. Download the latest APK from the [Releases](../../releases) section
+2. Transfer the APK to your Android device
+3. On your Android device, open the APK file
+4. Follow the installation prompts
+5. Done! You can now use the app
 
-## Development Setup
+### Method 2: Build it Yourself (For Developers)
+
+#### Prerequisites
+
+1. Install Node.js from [nodejs.org](https://nodejs.org)
+2. Install Git from [git-scm.com](https://git-scm.com)
+3. Install Android Studio (for Android builds)
+
+#### Steps to Build
 
 1. Clone the repository:
 
@@ -40,77 +46,66 @@ cd daily-todo-tracker
 npm install
 ```
 
-3. Start the development server:
-
-```bash
-npx expo start
-```
-
-4. Run on your device:
-   - Open Expo Go on your device
-   - Scan the QR code from terminal
-   - Or run on simulator/emulator:
-
-     ```bash
-     npx expo run:ios
-     # or
-     npx expo run:android
-     ```
-
-## Building Your Own Copy (No App Store Required)
-
-1. Install EAS CLI:
+3. Install EAS CLI:
 
 ```bash
 npm install -g eas-cli
 ```
 
-2. Login to your Expo account:
+4. Build APK:
 
 ```bash
-eas login
-```
-
-3. Configure the build:
-
-```bash
-eas build:configure
-```
-
-4. Build for your platform:
-
-```bash
-# For Android APK (can be installed directly)
+# Build Android APK
 eas build -p android --profile preview
 
-# For iOS (requires Apple Developer account)
-eas build -p ios --profile preview
+# The build will complete on Expo's servers
+# Download the APK from the link provided in terminal
 ```
 
-5. Once the build is complete:
-   - For Android: Download the APK and install directly on your device
-   - For iOS: Install using TestFlight or register your device for development
+5. Install the APK on your Android device
 
-## Sharing with Friends
+#### Running in Development Mode
 
-### Android Users
-- Share the APK file directly
-- Or share the GitHub repository link for them to build their own copy
+If you want to modify the code and test changes:
 
-### iOS Users
-- Share the Expo Go link
-- Or help them build using their Apple ID
-- Or add their device to your Apple Developer account
+1. Start the development server:
+
+```bash
+npm start
+```
+
+2. Run on Android:
+
+```bash
+npm run android
+```
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **Build fails**:
+   - Make sure you have run `npm install`
+   - Clear npm cache: `npm cache clean --force`
+   - Delete node_modules and reinstall: 
+     ```bash
+     rm -rf node_modules
+     npm install
+     ```
+
+2. **APK won't install**:
+   - Enable "Install from Unknown Sources" in Android settings
+   - Make sure you have enough storage space
+   - Uninstall any previous version first
+
+3. **Development environment issues**:
+   - Make sure Android Studio is properly installed
+   - Set ANDROID_HOME environment variable
+   - Accept Android SDK licenses: `sdkmanager --licenses`
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Feel free to fork this repository and make your own changes. If you find any bugs or have suggestions, please open an issue.
 
 ## License
 
@@ -118,6 +113,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Built with [Expo](https://expo.dev/)
+- Built with [React Native](https://reactnative.dev/)
 - Calendar component by [react-native-calendars](https://github.com/wix/react-native-calendars)
 - Icons from [Expo Vector Icons](https://icons.expo.fyi)
