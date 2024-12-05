@@ -14,6 +14,12 @@ Download Link - https://expo.dev/artifacts/eas/mUXJGz7Yi79uSUfQe2JSDm.apk
 - 📸 Add media attachments to tasks
 - 🔄 Task postponement with confirmation
 
+## User Interface
+
+![IMG_20241205_120506](https://github.com/user-attachments/assets/b6cfb736-bd76-4bb7-9131-ff72cc7e9a38)
+
+![IMG_20241205_120520](https://github.com/user-attachments/assets/5677bb9d-f91b-4f5b-80dd-be3a37e698ca)
+
 ## Installation Options
 
 ### Method 1: Direct APK Installation (Android Only)
