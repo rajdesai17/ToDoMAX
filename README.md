@@ -16,9 +16,12 @@ Download Link - https://expo.dev/artifacts/eas/mUXJGz7Yi79uSUfQe2JSDm.apk
 
 ## User Interface
 
-![IMG_20241205_120506](https://github.com/user-attachments/assets/b6cfb736-bd76-4bb7-9131-ff72cc7e9a38)
+## User Interface
 
-![IMG_20241205_120520](https://github.com/user-attachments/assets/5677bb9d-f91b-4f5b-80dd-be3a37e698ca)
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/b6cfb736-bd76-4bb7-9131-ff72cc7e9a38" alt="Screenshot 1" width="300">
+  <img src="https://github.com/user-attachments/assets/5677bb9d-f91b-4f5b-80dd-be3a37e698ca" alt="Screenshot 2" width="300">
+</div>
 
 ## Installation Options
 
